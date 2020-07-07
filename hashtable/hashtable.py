@@ -24,7 +24,8 @@ class HashTable:
     def __init__(self, capacity):
         # Your code here
         self.capacity = capacity
-        self.data = [None] * capacity
+        self.buckets = [None] * capacity
+        self.size = 0
 
     def get_num_slots(self):
         """
@@ -37,7 +38,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        return len(self.data)
+        return len(self.buckets)
 
     def get_load_factor(self):
         """
@@ -46,6 +47,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        return self.size / len(self.buckets)
 
     def fnv1(self, key):
         """
@@ -84,9 +86,29 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
-        i = self.hash_index(key)
-        self.data[i] = value
+        # i = self.hash_index(key)
+        # self.buckets[i] = value
+
+        # linked list implementation for collisions
+        # increment the size
+        self.size += 1
+        # get the hash and get index of the key
+        index = self.hash_index(key)
+        # go to to the index
+        node = self.buckets[index]
+        # If bucket is empty:
+        if node is None:
+            # Create node, add it, return
+            self.buckets[index] = HashTableEntry(key, value)
+            return
+        # else Iterate to the end of the linked list at provided index
+        prevNode = node
+        while node is not None:
+            prevNode = node
+            node = node.next
+            # traverses through the linked list until the end
+        # insert new node to the end of the list
+        prevNode.next = HashTableEntry(key, value)
 
     def delete(self, key):
         """
@@ -98,7 +120,7 @@ class HashTable:
         """
         # Your code here
         i = self.hash_index(key)
-        self.data[i] = None
+        self.buckets[i] = None
 
     def get(self, key):
         """
@@ -108,9 +130,20 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
-        i = self.hash_index(key)
-        return self.data[i]
+        # i = self.hash_index(key)
+        # return self.buckets[i]
+
+        # compute hash index
+        index = self.hash_index(key)
+        node = self.buckets[index]
+
+        while node is not None:
+            if node.key == key:
+                return node.value
+            node = node.next
+
+        if node is None:
+            return None
 
     def resize(self, new_capacity):
         """
