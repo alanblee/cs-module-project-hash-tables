@@ -95,17 +95,19 @@ class HashTable:
         # get the hash and get index of the key
         index = self.hash_index(key)
         # go to to the index
-        node = self.buckets[index]
+        currentNode = self.buckets[index]
         # If bucket is empty:
-        if node is None:
+        if currentNode is None:
             # Create node, add it, return
             self.buckets[index] = HashTableEntry(key, value)
             return
         # else Iterate to the end of the linked list at provided index
-        prevNode = node
-        while node is not None:
-            prevNode = node
-            node = node.next
+        prevNode = currentNode
+        while currentNode is not None:
+            if currentNode.key == key:
+                currentNode.value = value
+            prevNode = currentNode
+            currentNode = currentNode.next
             # traverses through the linked list until the end
         # insert new node to the end of the list
         prevNode.next = HashTableEntry(key, value)
@@ -119,8 +121,28 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        i = self.hash_index(key)
-        self.buckets[i] = None
+        # i = self.hash_index(key)
+        # self.buckets[i] = None
+
+        index = self.hash_index(key)
+        # initial node head
+        currentNode = self.buckets[index]
+
+        # special case if head of the node is the one to delete
+        if currentNode.key == key:
+            self.buckets[index] = self.buckets[index].next
+            return currentNode
+        # if not deleting the head set var for prev node to the currentNode and the currentNode ot the next of head
+        prevNode = currentNode
+        currentNode = currentNode.next
+        if currentNode is not None:
+            if currentNode.key == key:
+                prevNode.next = currentNode.next
+                return currentNode
+            else:
+                prevNode = prevNode.next
+                currentNode = currentNode.next
+        return None
 
     def get(self, key):
         """
@@ -135,14 +157,14 @@ class HashTable:
 
         # compute hash index
         index = self.hash_index(key)
-        node = self.buckets[index]
+        currentNode = self.buckets[index]
 
-        while node is not None:
-            if node.key == key:
-                return node.value
-            node = node.next
+        while currentNode is not None:
+            if currentNode.key == key:
+                return currentNode.value
+            currentNode = currentNode.next
 
-        if node is None:
+        if currentNode is None:
             return None
 
     def resize(self, new_capacity):
