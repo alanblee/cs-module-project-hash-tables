@@ -138,7 +138,7 @@ class HashTable:
         if currentNode is not None:
             if currentNode.key == key:
                 prevNode.next = currentNode.next
-                currentNode = None
+                # currentNode = None
                 self.size -= 1
                 return currentNode
             else:

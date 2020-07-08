@@ -12,26 +12,21 @@ def slowfun_too_slow(x, y):
     return v
 
 
-# cache = {}
-
 def slowfun(x, y):
     """
     Rewrite slowfun_too_slow() in here so that the program produces the same
     output, but completes quickly instead of taking ages to run.
     """
     # Your code here
-    cache = {}s
-    if (x, y) not in cache:
-        cache[(x, y)] = slowfun_too_slow(x, y)
+    cache = {}
 
-    return cache[(x, y)]
-def slowfun_inner(x, y):
-    if (x, y) not in cache:
-        cache[(x, y)] = slowfun_too_slow(x, y)
+    def slowfun_inner(x, y):
+        if (x, y) not in cache:
+            cache[(x, y)] = slowfun_too_slow(x, y)
 
-        return cache[(x, y)]
+            return cache[(x, y)]
 
-return slowfun_inner(x, y)
+    return slowfun_inner(x, y)
 
 
 # Do not modify below this line!
