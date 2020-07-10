@@ -1,6 +1,16 @@
 def no_dups(s):
-    # Your code here
+    splitStr = s.split()
+    strSet = set(splitStr)
+    outputStr = ""
 
+    for str in splitStr:
+        if str in strSet:
+            outputStr += str + " "
+            strSet.remove(str)
+
+    # remove the extra space
+    outputStr = outputStr[:-1]
+    return outputStr
 
 
 if __name__ == "__main__":
