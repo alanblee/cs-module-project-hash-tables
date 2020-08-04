@@ -106,6 +106,7 @@ class HashTable:
         while currentNode is not None:
             if currentNode.key == key:
                 currentNode.value = value
+                return currentNode
             prevNode = currentNode
             currentNode = currentNode.next
             # traverses through the linked list until the end
